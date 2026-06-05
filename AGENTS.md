@@ -1,15 +1,20 @@
 # Evolution API - AI Agent Guidelines
 
+## NEVER RESPOND IN ANY OTHER LANGUAGE THAN ENGLISH
+
+
+
 This document provides comprehensive guidelines for AI agents (Claude, GPT, Cursor, etc.) working with the Evolution API codebase.
 
 ## Project Overview
 
 **Evolution API** is a production-ready, multi-tenant WhatsApp API platform built with Node.js, TypeScript, and Express.js. It supports multiple WhatsApp providers and extensive integrations with chatbots, CRM systems, and messaging platforms.
 
-## Project Structure & Module Organization
+## Project Structure &amp; Module Organization
 
 ### Core Directories
-- **`src/`** – TypeScript source code with modular architecture
+
+- `**src/**` – TypeScript source code with modular architecture
   - `api/controllers/` – HTTP route handlers (thin layer)
   - `api/services/` – Business logic (core functionality)
   - `api/routes/` – Express route definitions (RouterBroker pattern)
@@ -22,23 +27,25 @@ This document provides comprehensive guidelines for AI agents (Claude, GPT, Curs
   - `guards/` – Authentication/authorization middleware
   - `types/` – TypeScript type definitions
   - `repository/` – Data access layer (Prisma)
-- **`prisma/`** – Database schemas and migrations
+- `**prisma/**` – Database schemas and migrations
   - `postgresql-schema.prisma` / `mysql-schema.prisma` – Provider-specific schemas
   - `postgresql-migrations/` / `mysql-migrations/` – Provider-specific migrations
-- **`config/`** – Environment and application configuration
-- **`utils/`** – Shared utilities and helper functions
-- **`validate/`** – JSONSchema7 validation schemas
-- **`exceptions/`** – Custom HTTP exception classes
-- **`cache/`** – Redis and local cache implementations
+- `**config/**` – Environment and application configuration
+- `**utils/**` – Shared utilities and helper functions
+- `**validate/**` – JSONSchema7 validation schemas
+- `**exceptions/**` – Custom HTTP exception classes
+- `**cache/**` – Redis and local cache implementations
 
-### Build & Deployment
-- **`dist/`** – Build output (do not edit directly)
-- **`public/`** – Static assets and media files
-- **`Docker*`**, **`docker-compose*.yaml`** – Containerization and local development stack
+### Build &amp; Deployment
+
+- `**dist/**` – Build output (do not edit directly)
+- `**public/**` – Static assets and media files
+- `**Docker***`, `**docker-compose*.yaml**` – Containerization and local development stack
 
 ## Build, Test, and Development Commands
 
 ### Development Workflow
+
 ```bash
 # Development server with hot reload
 npm run dev:server
@@ -52,6 +59,7 @@ npm run start:prod
 ```
 
 ### Code Quality
+
 ```bash
 # Linting and formatting
 npm run lint        # ESLint with auto-fix
@@ -62,6 +70,7 @@ npm run commit      # Interactive commit with Commitizen
 ```
 
 ### Database Management
+
 ```bash
 # Set database provider first (CRITICAL)
 export DATABASE_PROVIDER=postgresql  # or mysql
@@ -82,6 +91,7 @@ npm run db:studio      # Open Prisma Studio
 ```
 
 ### Docker Development
+
 ```bash
 # Start local services (Redis, PostgreSQL, etc.)
 docker-compose up -d
@@ -90,9 +100,10 @@ docker-compose up -d
 docker-compose -f docker-compose.dev.yaml up -d
 ```
 
-## Coding Standards & Architecture Patterns
+## Coding Standards &amp; Architecture Patterns
 
 ### Code Style (Enforced by ESLint + Prettier)
+
 - **TypeScript strict mode** with full type coverage
 - **2-space indentation**, single quotes, trailing commas
 - **120-character line limit**
@@ -107,6 +118,7 @@ docker-compose -f docker-compose.dev.yaml up -d
 ### Architecture Patterns
 
 #### Service Layer Pattern
+
 ```typescript
 export class ExampleService {
   constructor(private readonly waMonitor: WAMonitoringService) {}
@@ -118,7 +130,7 @@ export class ExampleService {
     return { example: { ...instance, data } };
   }
   
-  public async find(instance: InstanceDto): Promise<ExampleDto | null> {
+  public async find(instance: InstanceDto): Promise[[ORCA_RAW_HTML_INLINE:%3CExampleDto%20%7C%20null%3E]] {
     try {
       const result = await this.waMonitor.waInstances[instance.instanceName].findData();
       return result || null; // Return null on not found (Evolution pattern)
@@ -131,6 +143,7 @@ export class ExampleService {
 ```
 
 #### Controller Pattern (Thin Layer)
+
 ```typescript
 export class ExampleController {
   constructor(private readonly exampleService: ExampleService) {}
@@ -142,6 +155,7 @@ export class ExampleController {
 ```
 
 #### RouterBroker Pattern
+
 ```typescript
 export class ExampleRouter extends RouterBroker {
   constructor(...guards: any[]) {
@@ -160,6 +174,7 @@ export class ExampleRouter extends RouterBroker {
 ```
 
 #### DTO Pattern (Simple Classes)
+
 ```typescript
 // CORRECT - Evolution API pattern (no decorators)
 export class ExampleDto {
@@ -176,6 +191,7 @@ export class BadExampleDto {
 ```
 
 #### Validation Pattern (JSONSchema7)
+
 ```typescript
 import { JSONSchema7 } from 'json-schema';
 import { v4 } from 'uuid';
@@ -195,12 +211,14 @@ export const exampleSchema: JSONSchema7 = {
 ## Multi-Tenant Architecture
 
 ### Instance Isolation
+
 - **CRITICAL**: All operations must be scoped by `instanceName` or `instanceId`
 - **Database queries**: Always include `where: { instanceId: ... }`
 - **Authentication**: Validate instance ownership before operations
 - **Data isolation**: Complete separation between tenant instances
 
 ### WhatsApp Instance Management
+
 ```typescript
 // Access instance via WAMonitoringService
 const waInstance = this.waMonitor.waInstances[instance.instanceName];
@@ -212,12 +230,14 @@ if (!waInstance) {
 ## Database Patterns
 
 ### Multi-Provider Support
+
 - **PostgreSQL**: Uses `@db.Integer`, `@db.JsonB`, `@default(now())`
 - **MySQL**: Uses `@db.Int`, `@db.Json`, `@default(now())`
 - **Environment**: Set `DATABASE_PROVIDER=postgresql` or `mysql`
 - **Migrations**: Provider-specific folders auto-selected
 
 ### Prisma Repository Pattern
+
 ```typescript
 // Always use PrismaRepository for database operations
 const result = await this.prismaRepository.instance.findUnique({
@@ -228,18 +248,21 @@ const result = await this.prismaRepository.instance.findUnique({
 ## Integration Patterns
 
 ### Channel Integration (WhatsApp Providers)
+
 - **Baileys**: WhatsApp Web with QR code authentication
 - **Business API**: Official Meta WhatsApp Business API  
 - **Evolution API**: Custom WhatsApp integration
 - **Pattern**: Extend base channel service classes
 
 ### Chatbot Integration
+
 - **Base classes**: Extend `BaseChatbotService` and `BaseChatbotController`
 - **Trigger system**: Support keyword, regex, and advanced triggers
 - **Session management**: Handle conversation state per user
 - **Available integrations**: EvolutionBot, OpenAI, Dify, Typebot, Chatwoot, Flowise, N8N, EvoAI
 
 ### Event Integration
+
 - **Internal events**: EventEmitter2 for application events
 - **External events**: WebSocket, RabbitMQ, SQS, NATS, Pusher
 - **Webhook delivery**: Reliable delivery with retry logic
@@ -247,11 +270,13 @@ const result = await this.prismaRepository.instance.findUnique({
 ## Testing Guidelines
 
 ### Current State
+
 - **No formal test suite** currently implemented
 - **Manual testing** is the primary approach
 - **Integration testing** in development environment
 
 ### Testing Strategy
+
 ```typescript
 // Place tests in test/ directory as *.test.ts
 // Run: npm test (watches test/all.test.ts)
@@ -266,14 +291,16 @@ describe('ExampleService', () => {
 ```
 
 ### Recommended Approach
+
 - Focus on **critical business logic** in services
 - **Mock external dependencies** (WhatsApp APIs, databases)
 - **Integration tests** for API endpoints
 - **Manual testing** for WhatsApp connection flows
 
-## Commit & Pull Request Guidelines
+## Commit &amp; Pull Request Guidelines
 
 ### Conventional Commits (Enforced by commitlint)
+
 ```bash
 # Use interactive commit tool
 npm run commit
@@ -283,21 +310,24 @@ npm run commit
 ```
 
 ### Examples
+
 - `feat(api): add WhatsApp message status endpoint`
 - `fix(baileys): resolve connection timeout issue`
 - `docs(readme): update installation instructions`
 - `refactor(service): extract common message validation logic`
 
 ### Pull Request Requirements
+
 - **Clear description** of changes and motivation
 - **Linked issues** if applicable
 - **Migration impact** (specify database provider)
 - **Local testing steps** with screenshots/logs
 - **Breaking changes** clearly documented
 
-## Security & Configuration
+## Security &amp; Configuration
 
 ### Environment Setup
+
 ```bash
 # Copy example environment file
 cp .env.example .env
@@ -308,6 +338,7 @@ export DATABASE_PROVIDER=postgresql  # or mysql
 ```
 
 ### Security Best Practices
+
 - **API key authentication** via `apikey` header
 - **Input validation** with JSONSchema7
 - **Rate limiting** on all endpoints
@@ -316,38 +347,44 @@ export DATABASE_PROVIDER=postgresql  # or mysql
 - **Secure defaults** for all configurations
 
 ### Vulnerability Reporting
+
 - See `SECURITY.md` for security vulnerability reporting process
 - Contact: `contato@evolution-api.com`
 
 ## Communication Standards
 
 ### Language Requirements
+
 - **User communication**: Always respond in Portuguese (PT-BR)
 - **Code/comments**: English for technical documentation
 - **API responses**: English for consistency
 - **Error messages**: Portuguese for user-facing errors
 
 ### Documentation Standards
+
 - **Inline comments**: Document complex business logic
 - **API documentation**: Document all public endpoints
 - **Integration guides**: Document new integration patterns
 - **Migration guides**: Document database schema changes
 
-## Performance & Scalability
+## Performance &amp; Scalability
 
 ### Caching Strategy
+
 - **Redis primary**: Distributed caching for production
 - **Node-cache fallback**: Local caching when Redis unavailable
 - **TTL strategy**: Appropriate cache expiration per data type
 - **Cache invalidation**: Proper invalidation on data changes
 
 ### Connection Management
+
 - **Database**: Prisma connection pooling
 - **WhatsApp**: One connection per instance with lifecycle management
 - **Redis**: Connection pooling and retry logic
 - **External APIs**: Rate limiting and retry with exponential backoff
 
-### Monitoring & Observability
+### Monitoring &amp; Observability
+
 - **Structured logging**: Pino logger with correlation IDs
 - **Error tracking**: Comprehensive error scenarios
 - **Health checks**: Instance status and connection monitoring
