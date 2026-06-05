@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Daycare WhatsApp Bulk Sender</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="page">
+      <section class="card">
+        <h1>Daycare Announcement Sender</h1>
+        <p class="subtitle">Send one announcement to 5 contacts through Evolution API with safe pacing.</p>
+
+        <div class="grid two-col">
+          <label>
+            Evolution API Base URL
+            <input id="baseUrl" type="url" placeholder="http://localhost:8080" value="http://localhost:8080" />
+          </label>
+          <label>
+            Instance Name
+            <input id="instanceName" type="text" placeholder="my-instance" value="evolution" />
+          </label>
+        </div>
+
+        <label>
+          API Key
+          <input id="apiKey" type="password" placeholder="your apikey header value" value="429683C4C977415CAAFCCE10F7D57E11" />
+        </label>
+
+        <h2>Contacts (5)</h2>
+        <div class="grid two-col">
+          <label>Contact 1<input id="contact1" type="text" placeholder="15551234567" value="+919970708106" /></label>
+          <label>Contact 2<input id="contact2" type="text" placeholder="15557654321" value="+919970709106" /></label>
+          <label>Contact 3<input id="contact3" type="text" placeholder="15559876543" value="+917038667755" /></label>
+          <label>Contact 4<input id="contact4" type="text" placeholder="15553456789" value="+918459058981" /></label>
+          <label>Contact 5<input id="contact5" type="text" placeholder="15554321987" /></label>
+        </div>
+
+        <label>
+          Announcement Message
+          <textarea id="message" rows="6" placeholder="Hello parents, tomorrow we will close at 3:00 PM due to staff training."></textarea>
+        </label>
+
+        <div class="grid three-col">
+          <label>
+            Min Delay (ms)
+            <input id="minDelay" type="number" min="1000" step="500" value="4000" />
+          </label>
+          <label>
+            Max Delay (ms)
+            <input id="maxDelay" type="number" min="1000" step="500" value="9000" />
+          </label>
+          <label>
+            Request Timeout (ms)
+            <input id="timeout" type="number" min="1000" step="1000" value="20000" />
+          </label>
+        </div>
+
+        <div class="actions">
+          <button id="validateBtn" type="button">1) Validate Contacts</button>
+          <button id="sendBtn" type="button" class="primary">2) Send to Valid Contacts</button>
+        </div>
+
+        <section class="status-panel">
+          <h3>Status</h3>
+          <div class="summary" id="summary">Ready.</div>
+          <pre id="log" aria-live="polite"></pre>
+        </section>
+      </section>
+    </main>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
