@@ -14,9 +14,9 @@ MESSAGE="${MESSAGE:-This is principal manjul sher and this is a reminder from th
 # 4 contacts (E.164 with country code, no +)
 CONTACTS=(
   "919970708106"
+  "919970709106"
   "917038667755"
   "918459058981"
-  "15137997001"
 )
 
 log() { printf "[%s] %s\n" "$(date '+%H:%M:%S')" "$*"; }

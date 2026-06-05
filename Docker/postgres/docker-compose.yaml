@@ -9,9 +9,10 @@ services:
     command: ["postgres", "-c", "max_connections=1000"]
     restart: always
     ports:
-      - 5432:5432
+      - 5433:5432
     environment:
       - POSTGRES_PASSWORD=PASSWORD
+      - POSTGRES_DB=evolution_db
     volumes:
       - postgres_data:/var/lib/postgresql/data
     expose:
