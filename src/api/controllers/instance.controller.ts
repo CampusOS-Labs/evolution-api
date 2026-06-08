@@ -152,7 +152,11 @@ export class InstanceController {
 
         if (instanceData.qrcode && instanceData.integration === Integration.WHATSAPP_BAILEYS) {
           await instance.connectToWhatsapp(instanceData.number);
-          await delay(5000);
+          for (let i = 0; i < 30; i++) {
+            const qr = instance.qrCode;
+            if (qr.count > 0 && (instanceData.number ? qr.pairingCode : qr.base64)) break;
+            await delay(1000);
+          }
           getQrcode = instance.qrCode;
         }
 
@@ -320,13 +324,22 @@ export class InstanceController {
       }
 
       if (state == 'connecting') {
+        for (let i = 0; i < 30; i++) {
+          const qr = instance.qrCode;
+          if (qr.count > 0 && (number ? qr.pairingCode : qr.base64)) break;
+          await delay(1000);
+        }
         return instance.qrCode;
       }
 
       if (state == 'close') {
         await instance.connectToWhatsapp(number);
 
-        await delay(2000);
+        for (let i = 0; i < 30; i++) {
+          const qr = instance.qrCode;
+          if (qr.count > 0 && (number ? qr.pairingCode : qr.base64)) break;
+          await delay(1000);
+        }
         return instance.qrCode;
       }
 
