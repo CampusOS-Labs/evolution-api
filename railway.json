@@ -6,6 +6,6 @@
   "deploy": {
     "restartPolicyType": "always",
     "healthcheckPath": "/",
-    "healthcheckTimeout": 60
+    "healthcheckTimeout": 180
   }
 }
