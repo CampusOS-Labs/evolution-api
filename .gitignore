@@ -23,7 +23,6 @@ lerna-debug.log*
 /pnpm-lock.yaml
 
 # IDEs
-.vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
@@ -46,3 +45,4 @@ lerna-debug.log*
 .tool-versions
 
 /prisma/migrations/*
+config.bat
